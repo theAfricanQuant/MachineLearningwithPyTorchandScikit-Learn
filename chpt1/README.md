@@ -1,7 +1,12 @@
+Of course. Here is the updated `README.md` that incorporates the Jupyter Notebook implementation, presenting it as an alternative way to run the checks.
+
+***
+
 # Python Environment Checker
 
-This script is a command-line tool designed to verify that a Python environment meets the specific dependency requirements for a project. It checks two key things:
+This document details a Python environment checker, available both as a standalone script and as a function to be used within a Jupyter Notebook. Its purpose is to verify that a project's environment meets specific dependency requirements.
 
+It checks two key things:
 1.  The version of the Python interpreter.
 2.  The versions of several critical scientific computing and data science packages.
 
@@ -9,25 +14,12 @@ This is useful for ensuring that code will run as expected and for guiding users
 
 ---
 
-## How It Works
+## Core Functionality
 
-The script executes its checks in a clear, sequential order.
+The checker operates by:
 
-### 1. Python Version Validation
-
-First, it checks the system's current Python version against a recommended minimum.
-
--   **Requirement:** Python `3.8` or newer.
--   **Method:** It uses `sys.version` to get the current version and `distutils.version.LooseVersion` to perform a reliable comparison.
--   **Output:** It prints an `[OK]` or `[FAIL]` message indicating if the Python version is suitable.
-
-### 2. Package Dependency Verification
-
-Next, it verifies a predefined list of required Python packages and their minimum versions.
-
-#### Required Packages
-
-The script checks for the following packages and versions:
+1.  **Validating the Python Version:** It ensures the interpreter is version `3.8` or newer.
+2.  **Verifying Package Dependencies:** It checks for the presence and version of the following required packages.
 
 | Package | Required Version |
 | :--- | :--- |
@@ -37,19 +29,13 @@ The script checks for the following packages and versions:
 | `sklearn` | `>= 1.0` |
 | `pandas` | `>= 1.3.2` |
 
-#### Verification Process
-
-For each package in the list, the script:
-1.  **Attempts to import it**. If the import fails, it reports that the package is `[FAIL]` not installed.
-2.  **Finds the version number**. It intelligently searches for the version in common attributes like `.__version__`, `.version`, or `.version_info`.
-3.  **Compares versions**. It compares the installed version against the required version.
-4.  **Prints the status**. It prints `[OK]` if the version is sufficient and `[FAIL]` if it is outdated, prompting the user to upgrade.
+For each package, the tool attempts to import it, find its version number, and compare it against the required version, reporting `[OK]` or `[FAIL]` for each.
 
 ---
 
-## Full Script
+## The `python_environment_check.py` Script
 
-Below is the complete source code for the environment checker.
+Below is the source code for the checker, intended to be saved in a file named `python_environment_check.py`.
 
 ```python
 import sys
@@ -92,7 +78,7 @@ def check_packages(d):
     Compares installed package versions against a dictionary of required versions.
     """
     versions = get_packages(d.keys())
-
+    print() # Add a newline for better formatting in notebook
     for (pkg_name, suggested_ver), actual_ver in zip(d.items(), versions):
         if actual_ver == 'N/A':
             continue
@@ -121,20 +107,66 @@ if __name__ == '__main__':
     # Run the check
     check_packages(required_packages)
 ```
-
 ---
+## Usage Examples
 
-## Usage
+There are two primary ways to use this environment checker.
 
-To use the script:
+### 1. As a Standalone Script
 
-1.  Save the code as a Python file (e.g., `python_environment_check.py`).
-2.  Open a terminal or command prompt.
-3.  Navigate to the directory where you saved the file.
-4.  Run the script using the following command:
+This is the most direct method. Save the code above as `python_environment_check.py` and run it from your terminal.
 
 ```bash
 python python_environment_check.py
 ```
 
-The script will then print the status of your environment directly to the console.
+**Example Output:**
+```
+[OK] Your Python version is 3.9.22 (main, May 30 2025, 05:30:51) [MSC v.1929 64 bit (AMD64)]
+
+[OK] numpy 1.21.2
+[OK] scipy 1.7.0
+[OK] matplotlib 3.4.3
+[OK] sklearn 1.0
+[OK] pandas 1.3.2
+```
+
+### 2. In a Jupyter Notebook
+
+The `check_packages` function can be imported and used directly within a notebook. This is useful for verifying the environment at the beginning of an analysis.
+
+Assuming your notebook is in a directory and the `python_environment_check.py` script is in the parent directory, you can run the following:
+
+**Cell 1: Import the checker function**
+```python
+import sys
+# Add the parent directory to the path to find the script
+sys.path.insert(0, '..') 
+
+from python_environment_check import check_packages
+```
+**Output of Cell 1:**
+```
+[OK] Your Python version is 3.9.22 (main, May 30 2025, 05:30:51) [MSC v.1929 64 bit (AMD64)]
+```
+
+**Cell 2: Define requirements and run the check**
+```python
+d = {
+    'numpy': '1.21.2',
+    'scipy': '1.7.0',
+    'matplotlib': '3.4.3',
+    'sklearn': '1.0',
+    'pandas': '1.3.2'
+}
+
+check_packages(d)
+```
+**Output of Cell 2:**
+```
+[OK] numpy 1.21.2
+[OK] scipy 1.7.0
+[OK] matplotlib 3.4.3
+[OK] sklearn 1.0
+[OK] pandas 1.3.2
+```
