@@ -5,6 +5,8 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.9"
 dependencies = [
+    "category-encoders>=2.6.4",
+    "graphviz>=0.21",
     "ipykernel>=6.29.5",
     "matplotlib==3.4.3",
     "numpy==1.21.2",

@@ -1,4 +1,4 @@
-### 📘 Project Structure – Chapter 3 Onward
+# 📘 Project Structure – Chapter 3 Onward
 
 As we start Chapter 3, the project is evolving in complexity. To keep things clean, reusable, and maintainable, here’s how the code is now organized:
 

@@ -1,0 +1,11 @@
+digraph {
+	A [label="Training Data with Missing Values"]
+	B [label="SimpleImputer.fit()"]
+	C [label="Learn Mean of Each Column"]
+	D [label="SimpleImputer.transform()"]
+	E [label="Cleaned Training Data"]
+	A -> B
+	B -> C
+	C -> D
+	D -> E
+}
