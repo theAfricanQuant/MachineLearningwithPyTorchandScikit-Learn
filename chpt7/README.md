@@ -236,19 +236,24 @@ We create many of these bootstrap samples and train one classifier on each. The 
 
 ```mermaid
 graph TD
-    A[Original Training Data (Size N)] -- Bootstrap Sampling --> B1(Sample 1 (Size N));
-    A -- Bootstrap Sampling --> B2(Sample 2 (Size N));
-    A -- Bootstrap Sampling --> Bm(Sample ... (Size N));
+    A[Training Data] --> B1(Train Classifier 1);
+    A --> B2(Train Classifier 2);
+    A --> B3(Train Classifier ...);
+    A --> Bm(Train Classifier m);
 
-    B1 --> C1(Train Classifier 1);
-    B2 --> C2(Train Classifier 2);
-    Bm --> Cm(Train Classifier ...);
+    subgraph Prediction Phase
+        C[New Data Point] --> D1[Classifier 1 Predicts];
+        C --> D2[Classifier 2 Predicts];
+        C --> D3[Classifier ... Predicts];
+        C --> Dm[Classifier m Predicts];
+    end
 
-    C1 & C2 & Cm --> D{Combine Predictions via Majority Vote};
-    D --> E((Final Prediction));
-
-    style A fill:#D6EAF8,stroke:#5DADE2
-    style D fill:#D5F5E3,stroke:#58D68D
+    D1 --> E{Combine Predictions with Majority Vote};
+    D2 --> E;
+    D3 --> E;
+    Dm --> E;
+    
+    E --> F((Final Prediction));
 ```
 
 ### Bagging in Action
